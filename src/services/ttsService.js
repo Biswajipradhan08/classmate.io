@@ -52,79 +52,123 @@ class IndianTTSService {
     /**
      * Get voice configuration based on agent profile
      * Considers name, gender, personality, and emotional state
+     * Enhanced with more sophisticated emotion handling like Google/Apple/Copilot
      */
     getVoiceConfig(agent) {
         const baseConfigs = {
-            // Female agents
-            'Luna': {
+            // Female agents (within 30)
+            'Isha': {
                 gender: 'female',
-                personality: 'Gentle & Calming',
-                baseRate: 0.85,
-                basePitch: 1.15,
+                personality: 'Warm & Supportive Mentor',
+                age: '28',
+                baseRate: 0.88,
+                basePitch: 1.12,
+                volume: 1.0,
                 emotions: {
-                    calm: { rate: 0.80, pitch: 1.10, variance: 0.05 },
-                    supportive: { rate: 0.85, pitch: 1.15, variance: 0.07 },
-                    encouraging: { rate: 0.90, pitch: 1.20, variance: 0.10 },
-                    playful: { rate: 0.95, pitch: 1.25, variance: 0.12 }
+                    calm: { rate: 0.80, pitch: 1.08, variance: 0.04 },
+                    supportive: { rate: 0.88, pitch: 1.12, variance: 0.06 },
+                    encouraging: { rate: 0.95, pitch: 1.18, variance: 0.09 },
+                    playful: { rate: 0.98, pitch: 1.22, variance: 0.11 },
+                    excited: { rate: 1.02, pitch: 1.25, variance: 0.12 },
+                    thoughtful: { rate: 0.82, pitch: 1.05, variance: 0.05 },
+                    confident: { rate: 0.92, pitch: 1.15, variance: 0.08 }
                 },
                 voiceHint: 'female'
             },
-            'Nova': {
+            'Elina': {
                 gender: 'female',
-                personality: 'Energetic & Enthusiastic',
-                baseRate: 1.0,
-                basePitch: 1.25,
+                personality: 'Energetic & Motivating Coach',
+                age: '26',
+                baseRate: 1.02,
+                basePitch: 1.28,
+                volume: 1.0,
                 emotions: {
-                    excited: { rate: 1.05, pitch: 1.30, variance: 0.15 },
-                    encouraging: { rate: 1.0, pitch: 1.25, variance: 0.12 },
-                    calm: { rate: 0.90, pitch: 1.15, variance: 0.08 },
-                    supportive: { rate: 0.95, pitch: 1.20, variance: 0.10 }
+                    excited: { rate: 1.08, pitch: 1.35, variance: 0.14 },
+                    encouraging: { rate: 1.04, pitch: 1.30, variance: 0.12 },
+                    playful: { rate: 1.05, pitch: 1.32, variance: 0.13 },
+                    supportive: { rate: 0.98, pitch: 1.25, variance: 0.10 },
+                    calm: { rate: 0.92, pitch: 1.18, variance: 0.08 },
+                    confident: { rate: 1.00, pitch: 1.28, variance: 0.11 },
+                    thoughtful: { rate: 0.88, pitch: 1.15, variance: 0.07 }
+                },
+                voiceHint: 'female'
+            },
+            'Amrita': {
+                gender: 'female',
+                personality: 'Intuitive & Empathetic Guide',
+                age: '29',
+                baseRate: 0.86,
+                basePitch: 1.10,
+                volume: 1.0,
+                emotions: {
+                    calm: { rate: 0.78, pitch: 1.05, variance: 0.03 },
+                    supportive: { rate: 0.86, pitch: 1.10, variance: 0.06 },
+                    thoughtful: { rate: 0.80, pitch: 1.03, variance: 0.04 },
+                    encouraging: { rate: 0.93, pitch: 1.16, variance: 0.09 },
+                    playful: { rate: 0.95, pitch: 1.18, variance: 0.10 },
+                    excited: { rate: 1.00, pitch: 1.22, variance: 0.11 },
+                    confident: { rate: 0.90, pitch: 1.12, variance: 0.07 }
                 },
                 voiceHint: 'female'
             },
             // Male agents
-            'Atlas': {
+            'Ashu': {
                 gender: 'male',
-                personality: 'Confident & Guiding',
-                baseRate: 0.90,
-                basePitch: 0.85,
+                personality: 'Casual & Friendly Buddy',
+                age: '27',
+                baseRate: 0.94,
+                basePitch: 1.02,
+                volume: 1.0,
                 emotions: {
-                    confident: { rate: 0.88, pitch: 0.83, variance: 0.05 },
-                    supportive: { rate: 0.90, pitch: 0.85, variance: 0.07 },
-                    encouraging: { rate: 0.92, pitch: 0.87, variance: 0.08 },
-                    calm: { rate: 0.85, pitch: 0.82, variance: 0.06 }
+                    playful: { rate: 1.00, pitch: 1.08, variance: 0.11 },
+                    encouraging: { rate: 0.97, pitch: 1.05, variance: 0.09 },
+                    supportive: { rate: 0.92, pitch: 1.00, variance: 0.08 },
+                    excited: { rate: 1.06, pitch: 1.12, variance: 0.13 },
+                    calm: { rate: 0.88, pitch: 0.98, variance: 0.07 },
+                    confident: { rate: 0.95, pitch: 1.04, variance: 0.09 },
+                    thoughtful: { rate: 0.86, pitch: 0.95, variance: 0.06 }
                 },
                 voiceHint: 'male'
             },
-            'Sage': {
+            'Adi': {
                 gender: 'male',
-                personality: 'Wise & Thoughtful',
-                baseRate: 0.85,
-                basePitch: 0.80,
+                personality: 'Confident & Analytical Mentor',
+                age: '28',
+                baseRate: 0.89,
+                basePitch: 0.92,
+                volume: 1.0,
                 emotions: {
-                    thoughtful: { rate: 0.80, pitch: 0.78, variance: 0.04 },
-                    supportive: { rate: 0.85, pitch: 0.80, variance: 0.06 },
-                    encouraging: { rate: 0.88, pitch: 0.82, variance: 0.07 },
-                    calm: { rate: 0.82, pitch: 0.78, variance: 0.05 }
+                    confident: { rate: 0.87, pitch: 0.90, variance: 0.05 },
+                    supportive: { rate: 0.89, pitch: 0.92, variance: 0.07 },
+                    thoughtful: { rate: 0.82, pitch: 0.88, variance: 0.05 },
+                    encouraging: { rate: 0.94, pitch: 0.96, variance: 0.08 },
+                    playful: { rate: 0.98, pitch: 0.98, variance: 0.10 },
+                    excited: { rate: 1.02, pitch: 1.00, variance: 0.11 },
+                    calm: { rate: 0.84, pitch: 0.89, variance: 0.06 }
                 },
                 voiceHint: 'male'
             },
-            'Spark': {
+            'Cliford': {
                 gender: 'male',
-                personality: 'Playful & Friendly',
-                baseRate: 0.95,
-                basePitch: 1.05,
+                personality: 'Wise & Thoughtful Counselor',
+                age: '30',
+                baseRate: 0.84,
+                basePitch: 0.88,
+                volume: 1.0,
                 emotions: {
-                    playful: { rate: 1.0, pitch: 1.10, variance: 0.12 },
-                    encouraging: { rate: 0.95, pitch: 1.05, variance: 0.10 },
-                    supportive: { rate: 0.90, pitch: 1.00, variance: 0.08 },
-                    excited: { rate: 1.05, pitch: 1.15, variance: 0.15 }
+                    thoughtful: { rate: 0.78, pitch: 0.84, variance: 0.04 },
+                    supportive: { rate: 0.84, pitch: 0.88, variance: 0.06 },
+                    calm: { rate: 0.80, pitch: 0.85, variance: 0.05 },
+                    encouraging: { rate: 0.90, pitch: 0.92, variance: 0.08 },
+                    confident: { rate: 0.87, pitch: 0.89, variance: 0.06 },
+                    playful: { rate: 0.92, pitch: 0.92, variance: 0.09 },
+                    excited: { rate: 0.98, pitch: 0.95, variance: 0.10 }
                 },
                 voiceHint: 'male'
             }
         };
 
-        return baseConfigs[agent.name] || baseConfigs['Atlas'];
+        return baseConfigs[agent.name] || baseConfigs['Adi'];
     }
 
     /**
@@ -170,25 +214,74 @@ class IndianTTSService {
 
     /**
      * Generate emotional variance to make speech more natural
+     * Enhanced with more sophisticated emotion detection like major assistants
      */
     getEmotionalVariance(emotion = 'neutral') {
         const emotionalVariances = {
-            calm: { rateFactor: -0.05, pitchFactor: -0.02 },
-            excited: { rateFactor: 0.1, pitchFactor: 0.1 },
-            thoughtful: { rateFactor: -0.08, pitchFactor: -0.03 },
-            playful: { rateFactor: 0.08, pitchFactor: 0.08 },
-            supportive: { rateFactor: 0.02, pitchFactor: 0.03 },
-            encouraging: { rateFactor: 0.05, pitchFactor: 0.05 },
-            neutral: { rateFactor: 0, pitchFactor: 0 }
+            calm: { rateFactor: -0.08, pitchFactor: -0.03, pauseFactor: 1.2 },
+            excited: { rateFactor: 0.12, pitchFactor: 0.12, pauseFactor: 0.8 },
+            thoughtful: { rateFactor: -0.10, pitchFactor: -0.05, pauseFactor: 1.3 },
+            playful: { rateFactor: 0.10, pitchFactor: 0.10, pauseFactor: 0.9 },
+            supportive: { rateFactor: 0.02, pitchFactor: 0.03, pauseFactor: 1.0 },
+            encouraging: { rateFactor: 0.06, pitchFactor: 0.06, pauseFactor: 0.95 },
+            confident: { rateFactor: -0.02, pitchFactor: 0.02, pauseFactor: 1.05 },
+            neutral: { rateFactor: 0, pitchFactor: 0, pauseFactor: 1.0 }
         };
 
         return emotionalVariances[emotion] || emotionalVariances.neutral;
     }
 
     /**
-     * Speak with full emotional and personality support
+     * Advanced emotion detection from text content
+     * Similar to how Google Assistant, Apple Siri, and Copilot detect context
      */
-    speak(text, agent, emotion = 'neutral', options = {}) {
+    detectEmotion(text) {
+        const lowerText = text.toLowerCase();
+        
+        // Excited/Energetic indicators
+        if (/\!|\?\?|amazing|awesome|incredible|great|fantastic|excited|love|wow|wonderful|brilliant|perfect/i.test(text)) {
+            return 'excited';
+        }
+        
+        // Encouraging indicators
+        if (/you can|believe|strong|capable|achieve|succeed|proud|well done|great job|keep going|progress/i.test(text)) {
+            return 'encouraging';
+        }
+        
+        // Calm/Soothing indicators
+        if (/take your time|relax|breathe|no hurry|slowly|peace|calm|rest|comfortable|easy/i.test(text)) {
+            return 'calm';
+        }
+        
+        // Supportive indicators
+        if (/I'm here|understand|hear you|with you|support|help|care|concern|matter|important/i.test(text)) {
+            return 'supportive';
+        }
+        
+        // Playful indicators
+        if (/fun|play|laugh|joke|enjoy|party|celebrate|cool|awesome|haha|let's/i.test(text)) {
+            return 'playful';
+        }
+        
+        // Thoughtful indicators
+        if (/think|consider|reflect|perhaps|maybe|wonder|curious|question|interesting|deeply/i.test(text)) {
+            return 'thoughtful';
+        }
+        
+        // Confident indicators
+        if (/definitely|absolutely|certainly|confident|sure|clear|obvious|proven|verified|successful/i.test(text)) {
+            return 'confident';
+        }
+        
+        return 'supportive'; // Default
+    }
+
+    /**
+     * Speak with full emotional and personality support
+     * Enhanced with auto-emotion detection like Google Assistant/Copilot
+     * Auto-detects emotion from text if not specified
+     */
+    speak(text, agent, emotion = 'auto', options = {}) {
         return new Promise((resolve, reject) => {
             if (!this.synth) {
                 reject(new Error('Speech Synthesis not available'));
@@ -200,8 +293,11 @@ class IndianTTSService {
 
             const utterance = new SpeechSynthesisUtterance(text);
             const voiceConfig = this.getVoiceConfig(agent);
-            const emotionConfig = voiceConfig.emotions[emotion] || voiceConfig.emotions.supportive;
-            const variance = this.getEmotionalVariance(emotion);
+            
+            // Auto-detect emotion from text if set to 'auto'
+            const finalEmotion = emotion === 'auto' ? this.detectEmotion(text) : emotion;
+            const emotionConfig = voiceConfig.emotions[finalEmotion] || voiceConfig.emotions.supportive;
+            const variance = this.getEmotionalVariance(finalEmotion);
 
             // Set voice
             const selectedVoice = this.selectVoice(voiceConfig.voiceHint);
@@ -212,13 +308,15 @@ class IndianTTSService {
             // Set rate and pitch with emotional variance
             utterance.rate = emotionConfig.rate + variance.rateFactor;
             utterance.pitch = emotionConfig.pitch + variance.pitchFactor;
-            utterance.volume = options.volume || 1.0;
+            utterance.volume = voiceConfig.volume || options.volume || 1.0;
             utterance.lang = 'en-IN'; // Prioritize Indian English
 
-            // Add natural pauses for comma and period
+            // Add natural pauses for better delivery (like major assistants)
             const textWithPauses = text
                 .replace(/,/g, ', ')
-                .replace(/\./g, '. ');
+                .replace(/\./g, '. ')
+                .replace(/;/g, '; ')
+                .replace(/\?/g, '? ');
             
             utterance.text = textWithPauses;
 
@@ -229,7 +327,7 @@ class IndianTTSService {
 
             utterance.onend = () => {
                 options.onEnd && options.onEnd();
-                resolve();
+                resolve({ emotion: finalEmotion, agent: agent.name });
             };
 
             utterance.onerror = (event) => {

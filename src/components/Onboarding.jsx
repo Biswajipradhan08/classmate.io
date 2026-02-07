@@ -13,52 +13,55 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
 
     const recognitionRef = useRef(null);
 
-    // Voice Buddy options
+    // Voice Buddy options - with real Indian names
     const buddies = [
         {
-            name: 'Luna',
-            personality: 'Gentle & Calming',
-            description: 'A soothing presence that makes you feel at ease',
+            name: 'Isha',
+            personality: 'Warm & Supportive Mentor',
+            description: 'A compassionate guide who listens and understands your journey',
             color: '#a142f4',
-            pitch: 1.1,
-            rate: 0.85,
-            avatar: '👩🏾‍🦱'
+            avatar: '👩🏾‍🦱',
+            age: '28'
         },
         {
-            name: 'Atlas',
-            personality: 'Confident & Guiding',
-            description: 'Your steady companion on this journey of discovery',
-            color: '#4285f4',
-            pitch: 0.9,
-            rate: 0.9,
-            avatar: '👨🏾'
-        },
-        {
-            name: 'Nova',
-            personality: 'Energetic & Enthusiastic',
-            description: 'Brings excitement and energy to every conversation',
+            name: 'Elina',
+            personality: 'Energetic & Motivating Coach',
+            description: 'Your enthusiastic cheerleader who brings energy to every conversation',
             color: '#ea4335',
-            pitch: 1.2,
-            rate: 1.0,
-            avatar: '👩🏽'
+            avatar: '👩🏽',
+            age: '26'
         },
         {
-            name: 'Sage',
-            personality: 'Wise & Thoughtful',
-            description: 'A reflective guide who values deep understanding',
-            color: '#34a853',
-            pitch: 0.95,
-            rate: 0.85,
-            avatar: '🧔🏾‍♂️'
-        },
-        {
-            name: 'Spark',
-            personality: 'Playful & Friendly',
-            description: 'Your cheerful buddy who makes everything fun',
+            name: 'Amrita',
+            personality: 'Intuitive & Empathetic Guide',
+            description: 'A thoughtful companion who truly gets what you\'re going through',
             color: '#fbbc04',
-            pitch: 1.15,
-            rate: 0.95,
-            avatar: '👦🏾'
+            avatar: '👩🏾',
+            age: '29'
+        },
+        {
+            name: 'Ashu',
+            personality: 'Casual & Friendly Buddy',
+            description: 'Your cool friend who makes everything fun and relatable',
+            color: '#4285f4',
+            avatar: '👨🏾',
+            age: '27'
+        },
+        {
+            name: 'Adi',
+            personality: 'Confident & Analytical Mentor',
+            description: 'A sharp guide who helps you think through everything clearly',
+            color: '#34a853',
+            avatar: '👨🏽',
+            age: '28'
+        },
+        {
+            name: 'Cliford',
+            personality: 'Wise & Thoughtful Counselor',
+            description: 'A reflective presence who brings depth and wisdom to your growth',
+            color: '#5f6368',
+            avatar: '🧔🏾‍♂️',
+            age: '30'
         }
     ];
 
@@ -140,8 +143,8 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
     }, [onboardingPhase, currentQuestion]);
 
     /**
-     * Enhanced speak function with emotion-based TTS
-     * Determines appropriate emotion based on context and speaks with personality
+     * Enhanced speak function with auto-emotion detection
+     * Like Google Assistant and Copilot - intelligently detects emotion from context
      */
     const speak = async (text, buddy = null) => {
         if (!buddy) {
@@ -150,21 +153,10 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
         }
 
         try {
-            // Determine emotion based on context
-            let emotion = 'supportive';
-            if (text.includes('Hi') && text.includes('Let\'s get to know')) {
-                emotion = 'encouraging';
-            } else if (text.includes('Awesome') || text.includes('great') || text.includes('excited')) {
-                emotion = 'excited';
-            } else if (text.includes('calm') || text.includes('take your time') || text.includes('relax')) {
-                emotion = 'calm';
-            } else if (text.includes('challenge') || text.includes('difficult')) {
-                emotion = 'supportive';
-            }
-
             setIsSpeaking(true);
 
-            await ttsService.speak(text, buddy, emotion, {
+            // Auto-detect emotion from text content (like major assistants do)
+            await ttsService.speak(text, buddy, 'auto', {
                 onStart: () => setIsSpeaking(true),
                 onEnd: () => setIsSpeaking(false),
                 onError: (error) => {

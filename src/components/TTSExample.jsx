@@ -85,7 +85,7 @@ export const TTSExample = ({ buddy }) => {
                 <h3>Try Different Emotions:</h3>
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <button
-                        onClick={() => handleSpeakWithEmotion('Hey there, I am here to support you!', 'supportive')}
+                        onClick={() => handleSpeakWithEmotion('I am here to support you on this journey!', 'supportive')}
                         style={buttonStyle('#4285f4')}
                     >
                         😊 Supportive
@@ -107,6 +107,18 @@ export const TTSExample = ({ buddy }) => {
                         style={buttonStyle('#fbbc04')}
                     >
                         🚀 Excited
+                    </button>
+                    <button
+                        onClick={() => handleSpeakWithEmotion('Let me think about this deeply. That is interesting.', 'thoughtful')}
+                        style={buttonStyle('#ea4335')}
+                    >
+                        💭 Thoughtful
+                    </button>
+                    <button
+                        onClick={() => handleSpeakWithEmotion('Let us have fun with this! It will be awesome!', 'playful')}
+                        style={buttonStyle('#5f6368')}
+                    >
+                        😄 Playful
                     </button>
                 </div>
             </div>
