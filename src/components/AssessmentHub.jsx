@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Logo from './Logo';
 
 const AssessmentHub = ({ buddy, userName = "friend", onComplete, onBack }) => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -216,6 +217,9 @@ const AssessmentHub = ({ buddy, userName = "friend", onComplete, onBack }) => {
                 top: 0,
                 zIndex: 100,
             }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto', marginBottom: '1rem' }}>
+                    <Logo />
+                </div>
                 <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <h1 style={{ fontSize: '1.8rem', fontWeight: '500', color: '#202124', margin: 0 }}>
                         🧭 Discover Your True Path

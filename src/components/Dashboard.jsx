@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Logo from './Logo';
 
 const Dashboard = ({ buddy, userName = "friend", userAnswers = {}, onNavigate }) => {
     const [activeSection, setActiveSection] = useState(null);
@@ -212,6 +213,11 @@ const Dashboard = ({ buddy, userName = "friend", userAnswers = {}, onNavigate })
             {/* Hero Section */}
             <div style={heroStyle}>
                 <div style={{ maxWidth: '1400px', margin: '0 auto', textAlign: 'center' }}>
+                    {/* Logo */}
+                    <div style={{ marginBottom: '2rem', textAlign: 'left', paddingLeft: '0' }}>
+                        <Logo />
+                    </div>
+
                     {/* Buddy Avatar */}
                     <div style={{
                         width: '100px',

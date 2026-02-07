@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Logo from './Logo';
 import '../index.css';
 
 const Navbar = ({ onOpenAuth }) => {
@@ -51,6 +52,8 @@ const Navbar = ({ onOpenAuth }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '0.25rem',
+        cursor: 'pointer',
+        textDecoration: 'none',
     };
 
     const logoPartStyle = (color) => ({
@@ -74,16 +77,7 @@ const Navbar = ({ onOpenAuth }) => {
         <nav style={navbarStyle}>
             <div style={containerStyle}>
                 <a href="#" style={logoStyle}>
-                    <span style={logoPartStyle('var(--color-google-blue)')}>C</span>
-                    <span style={logoPartStyle('var(--color-google-red)')}>l</span>
-                    <span style={logoPartStyle('var(--color-google-yellow)')}>a</span>
-                    <span style={logoPartStyle('var(--color-google-green)')}>s</span>
-                    <span style={logoPartStyle('var(--color-google-blue)')}>s</span>
-                    <span style={logoPartStyle('var(--color-google-red)')}>m</span>
-                    <span style={logoPartStyle('var(--color-google-yellow)')}>a</span>
-                    <span style={logoPartStyle('var(--color-google-green)')}>t</span>
-                    <span style={logoPartStyle('var(--color-google-blue)')}>e</span>
-                    <span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>.io</span>
+                    <Logo />
                 </a>
 
                 <div style={linkContainerStyle}>
