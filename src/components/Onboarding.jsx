@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ttsService from '../services/ttsService';
 
 const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
     const [onboardingPhase, setOnboardingPhase] = useState('buddy-selection'); // 'buddy-selection' | 'commitment' | 'questions'
@@ -11,7 +12,6 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
     const [isAnimating, setIsAnimating] = useState(false);
 
     const recognitionRef = useRef(null);
-    const synthRef = useRef(window.speechSynthesis);
 
     // Voice Buddy options
     const buddies = [
@@ -139,22 +139,43 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
         return () => clearTimeout(timer);
     }, [onboardingPhase, currentQuestion]);
 
-    const speak = (text, buddy = null) => {
-        if (!synthRef.current) return;
-        synthRef.current.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-
-        if (buddy) {
-            utterance.pitch = buddy.pitch;
-            utterance.rate = buddy.rate;
-        } else {
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
+    /**
+     * Enhanced speak function with emotion-based TTS
+     * Determines appropriate emotion based on context and speaks with personality
+     */
+    const speak = async (text, buddy = null) => {
+        if (!buddy) {
+            console.warn('No buddy selected for speech');
+            return;
         }
 
-        utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = () => setIsSpeaking(false);
-        synthRef.current.speak(utterance);
+        try {
+            // Determine emotion based on context
+            let emotion = 'supportive';
+            if (text.includes('Hi') && text.includes('Let\'s get to know')) {
+                emotion = 'encouraging';
+            } else if (text.includes('Awesome') || text.includes('great') || text.includes('excited')) {
+                emotion = 'excited';
+            } else if (text.includes('calm') || text.includes('take your time') || text.includes('relax')) {
+                emotion = 'calm';
+            } else if (text.includes('challenge') || text.includes('difficult')) {
+                emotion = 'supportive';
+            }
+
+            setIsSpeaking(true);
+
+            await ttsService.speak(text, buddy, emotion, {
+                onStart: () => setIsSpeaking(true),
+                onEnd: () => setIsSpeaking(false),
+                onError: (error) => {
+                    console.error('TTS Error:', error);
+                    setIsSpeaking(false);
+                }
+            });
+        } catch (error) {
+            console.error('Speech synthesis error:', error);
+            setIsSpeaking(false);
+        }
     };
 
     const handleBuddySelect = (buddy) => {
@@ -163,14 +184,14 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
 
         setTimeout(() => {
             setOnboardingPhase('commitment');
-        }, 3000);
+        }, 4000);
     };
 
     const handleCommitment = () => {
         speak(`Awesome! Let's begin this journey together, ${userName}!`, selectedBuddy);
         setTimeout(() => {
             setOnboardingPhase('questions');
-        }, 2000);
+        }, 3000);
     };
 
     const toggleListening = () => {

@@ -1,32 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ttsService from '../services/ttsService';
 
 const OnboardingCompletion = ({ buddy, userName = "friend", onContinue }) => {
     const [isSpeaking, setIsSpeaking] = useState(false);
-    const synthRef = useRef(window.speechSynthesis);
 
     const completionMessage = `Hey nice to know all about you, you're nice. What you're thinking now? Don't worry I'm with you`;
 
     useEffect(() => {
-        // Auto-speak completion message
-        speak(completionMessage);
-    }, []);
-
-    const speak = (text) => {
-        if (!synthRef.current) return;
-        synthRef.current.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-
+        // Auto-speak completion message with emotion
         if (buddy) {
-            utterance.pitch = buddy.pitch;
-            utterance.rate = buddy.rate;
-        } else {
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
+            speak(completionMessage);
+        }
+    }, [buddy]);
+
+    const speak = async (text) => {
+        if (!buddy) {
+            console.warn('No buddy selected for speech');
+            return;
         }
 
-        utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = () => setIsSpeaking(false);
-        synthRef.current.speak(utterance);
+        try {
+            setIsSpeaking(true);
+
+            await ttsService.speak(text, buddy, 'supportive', {
+                onStart: () => setIsSpeaking(true),
+                onEnd: () => setIsSpeaking(false),
+                onError: (error) => {
+                    console.error('TTS Error:', error);
+                    setIsSpeaking(false);
+                }
+            });
+        } catch (error) {
+            console.error('Speech synthesis error:', error);
+            setIsSpeaking(false);
+        }
     };
 
     const containerStyle = {
