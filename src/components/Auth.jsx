@@ -257,7 +257,14 @@ const Auth = ({ isOpen, onClose, initialMode = 'signin', onAuthSuccess }) => {
                 style={{ width: '100%', marginTop: '1.5rem', padding: '1rem', opacity: (isMobileVerified && isEmailVerified && passErrors.length === 0 && formData.password) ? 1 : 0.6 }}
                 disabled={!(isMobileVerified && isEmailVerified && passErrors.length === 0 && formData.password)}
                 onClick={() => {
-                    onAuthSuccess(formData);
+                    const userData = {
+                        ...formData,
+                        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                        name: formData.fullName,
+                        registeredAt: new Date().toISOString(),
+                        isVerified: true
+                    };
+                    onAuthSuccess(userData);
                     onClose();
                 }}
             >
@@ -266,28 +273,65 @@ const Auth = ({ isOpen, onClose, initialMode = 'signin', onAuthSuccess }) => {
         </form>
     );
 
-    const renderSignIn = () => (
-        <form onSubmit={(e) => e.preventDefault()}>
-            <div style={inputGroupStyle}>
-                <label style={labelStyle}>Classmate ID or Email</label>
-                <input type="text" placeholder="Enter your ID" style={inputStyle()} required />
-            </div>
-            <div style={inputGroupStyle}>
-                <label style={labelStyle}>Password</label>
-                <input type="password" placeholder="Enter password" style={inputStyle()} required />
-            </div>
-            <button
-                className="btn btn-primary"
-                style={{ width: '100%', marginTop: '1rem', padding: '1rem' }}
-                onClick={() => {
-                    onAuthSuccess({ userId: 'dummy_user' }); // Mock data for sign-in
-                    onClose();
-                }}
-            >
-                Sign In
-            </button>
-        </form>
-    );
+    const renderSignIn = () => {
+        const [signinData, setSigninData] = useState({ identifier: '', password: '' });
+
+        const handleSigninChange = (e) => {
+            const { name, value } = e.target;
+            setSigninData(prev => ({ ...prev, [name]: value }));
+        };
+
+        const handleSigninSubmit = async (e) => {
+            e.preventDefault();
+
+            // For demo mode: accept any credentials and create session
+            const userData = {
+                name: signinData.identifier.replace('@', ''),
+                userId: signinData.identifier,
+                email: signinData.identifier.includes('@') ? signinData.identifier : `${signinData.identifier}@classmate.io`,
+                authenticatedAt: new Date().toISOString()
+            };
+
+            onAuthSuccess(userData);
+            onClose();
+        };
+
+        return (
+            <form onSubmit={handleSigninSubmit}>
+                <div style={inputGroupStyle}>
+                    <label style={labelStyle}>Classmate ID or Email</label>
+                    <input
+                        name="identifier"
+                        type="text"
+                        placeholder="Enter your ID"
+                        style={inputStyle()}
+                        value={signinData.identifier}
+                        onChange={handleSigninChange}
+                        required
+                    />
+                </div>
+                <div style={inputGroupStyle}>
+                    <label style={labelStyle}>Password</label>
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Enter password"
+                        style={inputStyle()}
+                        value={signinData.password}
+                        onChange={handleSigninChange}
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="btn btn-primary"
+                    style={{ width: '100%', marginTop: '1.5rem', padding: '1rem' }}
+                >
+                    Sign In
+                </button>
+            </form>
+        );
+    };
 
     return (
         <div style={overlayStyle} onClick={onClose}>
