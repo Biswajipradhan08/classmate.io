@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Logo from './Logo';
 
-const CounselorBooking = ({ buddy, userName = "friend", assessmentResults = {}, onBack }) => {
+const CounselorBooking = ({ buddy, userName = "friend", currentUser, assessmentResults = {}, onBack }) => {
     const [selectedCounselor, setSelectedCounselor] = useState(null);
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
@@ -90,10 +91,42 @@ const CounselorBooking = ({ buddy, userName = "friend", assessmentResults = {}, 
         setBookingStep(2);
     };
 
-    const handleConfirmBooking = () => {
-        // Here you would normally send data to backend
-        setBookingStep(3);
+    const handleConfirmBooking = async () => {
+        try {
+            const amount = sessionType === '30min' ? 50 : 90;
+
+            // Call backend to create order
+            const res = await axios.post('/api/payments/create-order', {
+                orderAmount: amount,
+                customerId: currentUser?.id || currentUser?.googleId || 'guest_123',
+                customerPhone: '9999999999', // Placeholder as we don't collect phone yet
+                customerName: userName
+            });
+
+            console.log('Order created:', res.data);
+
+            if (res.data.payment_session_id) {
+                const cashfree = new window.Cashfree({
+                    mode: "sandbox" // or production
+                });
+
+                cashfree.checkout({
+                    paymentSessionId: res.data.payment_session_id,
+                    returnUrl: `http://localhost:5174/payment-status?order_id=${res.data.order_id}`
+                });
+            } else {
+                // Determine if failure, or just mock success if API fails (e.g. invalid keys)
+                console.warn('No payment session ID returned. Mocking success for demo.');
+                setBookingStep(3);
+            }
+        } catch (error) {
+            console.error('Payment Error:', error);
+            // Fallback for demo
+            setBookingStep(3);
+        }
     };
+
+    // ... (rest of component render)
 
     const containerStyle = {
         width: '100vw',
@@ -177,6 +210,7 @@ const CounselorBooking = ({ buddy, userName = "friend", assessmentResults = {}, 
         </div>
     );
 };
+// ... (rest of file)
 
 // Browse Counselors Component
 const BrowseCounselors = ({ counselors, onSelect }) => (

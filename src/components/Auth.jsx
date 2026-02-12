@@ -309,7 +309,9 @@ const Auth = ({ isOpen, onClose, initialMode = 'signin', onAuthSuccess }) => {
 
                 {mode !== 'otp' && (
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', border: '1px solid #dadce0', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>G</div>
+                        <a href="http://localhost:5000/api/auth/google" style={{ textDecoration: 'none' }}>
+                            <div style={{ width: '42px', height: '42px', borderRadius: '50%', border: '1px solid #dadce0', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>G</div>
+                        </a>
                         <div style={{ width: '42px', height: '42px', borderRadius: '50%', border: '1px solid #dadce0', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>in</div>
                         <div style={{ width: '42px', height: '42px', borderRadius: '50%', border: '1px solid #dadce0', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>📞</div>
                     </div>

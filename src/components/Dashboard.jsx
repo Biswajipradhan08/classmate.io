@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Logo from './Logo';
 
-const Dashboard = ({ buddy, userName = "friend", userAnswers = {}, onNavigate }) => {
+const Dashboard = ({ buddy, userName = "friend", userAnswers = {}, onNavigate, onLogout }) => {
     const [activeSection, setActiveSection] = useState(null);
     const [selectedPoll, setSelectedPoll] = useState(null);
     const [assessmentProgress, setAssessmentProgress] = useState({
@@ -212,10 +212,50 @@ const Dashboard = ({ buddy, userName = "friend", userAnswers = {}, onNavigate })
 
             {/* Hero Section */}
             <div style={heroStyle}>
-                <div style={{ maxWidth: '1400px', margin: '0 auto', textAlign: 'center' }}>
-                    {/* Logo */}
-                    <div style={{ marginBottom: '2rem', textAlign: 'left', paddingLeft: '0' }}>
-                        <Logo />
+                <div style={{ maxWidth: '1400px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
+                    {/* Header Row */}
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '2rem'
+                    }}>
+                        <div style={{ paddingLeft: '0' }}>
+                            <Logo />
+                        </div>
+
+                        <button
+                            onClick={onLogout}
+                            style={{
+                                padding: '0.8rem 1.5rem',
+                                backgroundColor: '#ffffff',
+                                color: '#ea4335',
+                                border: '2px solid rgba(234, 67, 53, 0.2)',
+                                borderRadius: '12px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                transition: 'all 0.2s ease',
+                                boxShadow: '0 2px 8px rgba(234, 67, 53, 0.1)',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#ea4335';
+                                e.currentTarget.style.color = '#ffffff';
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                e.currentTarget.style.boxShadow = '0 4px 12px rgba(234, 67, 53, 0.2)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#ffffff';
+                                e.currentTarget.style.color = '#ea4335';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = '0 2px 8px rgba(234, 67, 53, 0.1)';
+                            }}
+                        >
+                            <span style={{ fontSize: '1.2rem' }}>🚪</span>
+                            Logout
+                        </button>
                     </div>
 
                     {/* Buddy Avatar */}
@@ -1100,7 +1140,7 @@ const Dashboard = ({ buddy, userName = "friend", userAnswers = {}, onNavigate })
                     </div>
                 </section>
             </div>
-        </div>
+        </div >
     );
 };
 

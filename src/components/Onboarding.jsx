@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ttsService from '../services/ttsService';
+import Logo from './Logo';
 
 const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
     const [onboardingPhase, setOnboardingPhase] = useState('buddy-selection'); // 'buddy-selection' | 'commitment' | 'questions'
@@ -215,6 +216,14 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
                     onClose();
                 }
             }
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentQuestion > 0) {
+            setAnswers({ ...answers, [currentQ.id]: transcript });
+            setTranscript(answers[questions[currentQuestion - 1].id] || '');
+            setCurrentQuestion(prev => prev - 1);
         }
     };
 
@@ -507,6 +516,11 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
 
             {/* Main Content */}
             <div style={contentStyle}>
+                {/* Logo at top */}
+                <div style={{ marginBottom: '2rem', width: '100%', maxWidth: '900px' }}>
+                    <Logo />
+                </div>
+
                 {/* Buddy Selection Phase */}
                 {onboardingPhase === 'buddy-selection' && (
                     <>
@@ -580,54 +594,78 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
 
                 {/* Commitment Phase */}
                 {onboardingPhase === 'commitment' && selectedBuddy && (
-                    <div style={commitmentCardStyle}>
-                        <div style={{
-                            width: '120px',
-                            height: '120px',
-                            borderRadius: '50%',
-                            backgroundColor: `${selectedBuddy.color}20`,
-                            margin: '0 auto 2rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '4rem',
-                        }}>
-                            {selectedBuddy.avatar}
+                    <>
+                        <div style={{ marginBottom: '2rem', width: '100%', maxWidth: '700px' }}>
+                            <Logo />
                         </div>
+                        <div style={commitmentCardStyle}>
+                            <div style={{
+                                width: '120px',
+                                height: '120px',
+                                borderRadius: '50%',
+                                backgroundColor: `${selectedBuddy.color}20`,
+                                margin: '0 auto 2rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '4rem',
+                            }}>
+                                {selectedBuddy.avatar}
+                            </div>
 
-                        <h2 style={{
-                            fontSize: '2.5rem',
-                            fontWeight: '400',
-                            color: '#202124',
-                            marginBottom: '2rem',
-                        }}>
-                            Hey {userName}, I'm {selectedBuddy.name}!
-                        </h2>
+                            <h2 style={{
+                                fontSize: '2.5rem',
+                                fontWeight: '400',
+                                color: '#202124',
+                                marginBottom: '2rem',
+                            }}>
+                                Hey {userName}, I'm {selectedBuddy.name}!
+                            </h2>
 
-                        <p style={{
-                            fontSize: '1.3rem',
-                            color: '#5f6368',
-                            lineHeight: '1.6',
-                            marginBottom: '3rem',
-                        }}>
-                            I'll be your guide through this journey. Before we start, can you commit to sharing your <strong>authentic self</strong> with me? Answer with your honest thoughts and feelings - that's what makes our connection real.
-                        </p>
+                            <p style={{
+                                fontSize: '1.3rem',
+                                color: '#5f6368',
+                                lineHeight: '1.6',
+                                marginBottom: '3rem',
+                            }}>
+                                I'll be your guide through this journey. Before we start, can you commit to sharing your <strong>authentic self</strong> with me? Answer with your honest thoughts and feelings - that's what makes our connection real.
+                            </p>
 
-                        <button
-                            style={buttonStyle(true, selectedBuddy.color)}
-                            onClick={handleCommitment}
-                            onMouseEnter={(e) => {
-                                e.target.style.transform = 'scale(1.05)';
-                                e.target.style.boxShadow = `0 6px 20px ${selectedBuddy.color}40`;
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.transform = 'scale(1)';
-                                e.target.style.boxShadow = 'none';
-                            }}
-                        >
-                            I Commit to Being Authentic 🤝
-                        </button>
+                        <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+                            <button
+                                style={{
+                                    ...buttonStyle(false, selectedBuddy.color),
+                                    flex: 1,
+                                }}
+                                onClick={() => setOnboardingPhase('buddy-selection')}
+                                onMouseEnter={(e) => {
+                                    e.target.style.transform = 'scale(1.05)';
+                                    e.target.style.opacity = '0.9';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.transform = 'scale(1)';
+                                    e.target.style.opacity = '1';
+                                }}
+                            >
+                                ← Back to Choose Buddy
+                            </button>
+                            <button
+                                style={buttonStyle(true, selectedBuddy.color)}
+                                onClick={handleCommitment}
+                                onMouseEnter={(e) => {
+                                    e.target.style.transform = 'scale(1.05)';
+                                    e.target.style.boxShadow = `0 6px 20px ${selectedBuddy.color}40`;
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.transform = 'scale(1)';
+                                    e.target.style.boxShadow = 'none';
+                                }}
+                            >
+                                I Commit to Being Authentic 🤝
+                            </button>
+                        </div>
                     </div>
+                </>
                 )}
 
                 {/* Questions Phase */}
@@ -649,7 +687,29 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
                             />
                         </div>
 
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                            <button
+                                style={{
+                                    ...buttonStyle(false),
+                                    opacity: currentQuestion === 0 ? '0.5' : '1',
+                                    cursor: currentQuestion === 0 ? 'not-allowed' : 'pointer',
+                                    padding: '0.75rem 1.5rem',
+                                }}
+                                onClick={() => currentQuestion > 0 && handlePrevious()}
+                                disabled={currentQuestion === 0}
+                                onMouseEnter={(e) => {
+                                    if (currentQuestion > 0) {
+                                        e.target.style.transform = 'scale(1.05)';
+                                        e.target.style.opacity = '0.9';
+                                    }
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.transform = 'scale(1)';
+                                    e.target.style.opacity = currentQuestion === 0 ? '0.5' : '1';
+                                }}
+                            >
+                                ← Back
+                            </button>
                             <button
                                 style={buttonStyle(transcript.trim())}
                                 onClick={handleNext}
@@ -665,7 +725,7 @@ const Onboarding = ({ onClose, onComplete, userName = "friend" }) => {
                                     e.target.style.boxShadow = 'none';
                                 }}
                             >
-                                {currentQuestion < questions.length - 1 ? 'Continue' : 'Finish'}
+                                {currentQuestion < questions.length - 1 ? 'Continue →' : 'Finish'}
                             </button>
                         </div>
                     </div>
